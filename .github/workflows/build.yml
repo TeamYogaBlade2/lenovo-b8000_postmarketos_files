@@ -75,6 +75,7 @@ jobs:
           $PMB config ui fbkeyboard
           $PMB install --password 147147 --android-recovery-zip
           # https://wiki.postmarketos.org/wiki/Installation_from_recovery_mode
+          $PMB export
 
       - name: Release
         run: gh release create "build-$(date +%Y-%m-%d-%H-%M-%S)" '/tmp/postmarketOS-export/*'

@@ -73,11 +73,18 @@ jobs:
 
           $PMB config device lenovo-b8000
           $PMB config ui fbkeyboard
+          $PMB install --password 147147
           $PMB install --password 147147 --android-recovery-zip
           # https://wiki.postmarketos.org/wiki/Installation_from_recovery_mode
           $PMB export
 
       - name: Release
-        run: gh release create "build-$(date +%Y-%m-%d-%H-%M-%S)" '/tmp/postmarketOS-export/*'
+        # pmbootstrap creates symlinks to non-existent files
+        run: |
+          gh release create "build-$(date +%Y-%m-%d-%H-%M-%S)" \
+            '~/.local/var/pmbootstrap/chroot_rootfs_lenovo-b8000/boot/*' \
+            ~/.local/var/pmbootstrap/chroot_buildroot_armv7/var/lib/postmarketos-android-recovery-installer/pmos-lenovo-b8000.zip \
+            ~/.local/var/pmbootstrap/chroot_native/home/pmos/rootfs/lenovo-b8000.img
+
         env:
           GH_TOKEN: ${{ github.token }}

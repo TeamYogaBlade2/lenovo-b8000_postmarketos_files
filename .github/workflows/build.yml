@@ -1,0 +1,79 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      tmate:
+        type: boolean
+        description: 'SSH debug'
+        required: false
+        default: false
+
+permissions:
+  packages: write
+  contents: write
+
+env:
+  CCACHE_DIR: "/dev/shm/ccache"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: mxschmitt/action-tmate@v3
+        if: ${{ inputs.tmate }}
+        with:
+          detached: true
+
+      - name: Cache
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.local/var/pmbootstrap
+            ../pmbootstrap
+          key: cache-${{ github.sha }}
+          restore-keys: cache-
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup env
+        run: |
+          # https://packages.ubuntu.com/plucky/pmbootstrap : git kpartx openssl python3
+          #sudo apt-get install git kpartx openssl python3
+
+          cd ..
+          if [ -d pmbootstrap ]; then
+            git clone --depth=1 https://gitlab.postmarketos.org/postmarketOS/pmbootstrap.git pmbootstrap
+          else
+            cd pmbootstrap
+            git pull
+          fi
+
+          cat > /usr/local/bin/pmbootstrap << EOL
+          exec `pwd`/pmbootstrap/pmbootstrap.py --details-to-stdout $@
+          EOL
+
+          chmod a+x /usr/local/bin/pmbootstrap
+
+          yes '' | pmbootstrap init
+          pmbootstrap work_migrate
+          pmbootstrap -q shutdown
+
+      # https://gitlab.postmarketos.org/postmarketOS/pmbootstrap/-/blob/b982e45c8d1c803360e1d8227cf88c5a4c607979/.gitlab-ci.yml
+      # https://gitlab.postmarketos.org/postmarketOS/build.postmarketos.org/-/blob/bd94e26981da2b44020db26e2d2f1d994194de2c/bpo/jobs/build_image.py
+      - name: Build
+        run: |
+          pmbootstrap config device lenovo-b8000
+          pmbootstrap config ui fbkeyboard
+          pmbootstrap install --zap --password 147147 --no-image
+          pmbootstrap install --zap --password 147147 --fde --no-image
+
+      - name: Release
+        run: gh release create "build-$(date +%Y-%m-%d-%H-%M-%S)" build_result.tar.gz
+        env:
+          GH_TOKEN: ${{ github.token }}

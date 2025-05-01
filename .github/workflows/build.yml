@@ -64,8 +64,11 @@ jobs:
       - name: Build
         run: |
           PMB="`pwd`/../pmbootstrap/pmbootstrap.py --details-to-stdout -y"
+
+          ln -s `pwd` /home/runner/.local/var/pmbootstrap/cache_git/blade10
+
           set -x
-          
+
           $PMB config device lenovo-b8000
           $PMB config ui fbkeyboard
           $PMB install --zap --password 147147 --no-image

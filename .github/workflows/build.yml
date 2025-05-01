@@ -48,10 +48,10 @@ jobs:
 
           cd ..
           if [ -d pmbootstrap ]; then
-            git clone --depth=1 https://gitlab.postmarketos.org/postmarketOS/pmbootstrap.git pmbootstrap
-          else
             cd pmbootstrap
             git pull
+          else
+            git clone --depth=1 https://gitlab.postmarketos.org/postmarketOS/pmbootstrap.git pmbootstrap
           fi
 
           cat > /usr/local/bin/pmbootstrap << EOL

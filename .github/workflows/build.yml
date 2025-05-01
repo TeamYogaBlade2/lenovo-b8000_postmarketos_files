@@ -33,7 +33,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-            ~/.local/var/pmbootstrap
+            /home/runner/.local/var/pmbootstrap
             ../pmbootstrap
           key: cache-${{ github.sha }}
           restore-keys: cache-
@@ -43,6 +43,7 @@ jobs:
 
       - name: Setup env
         run: |
+          set -x
           # https://packages.ubuntu.com/plucky/pmbootstrap : git kpartx openssl python3
           #sudo apt-get install git kpartx openssl python3
 
@@ -67,6 +68,7 @@ jobs:
       # https://gitlab.postmarketos.org/postmarketOS/build.postmarketos.org/-/blob/bd94e26981da2b44020db26e2d2f1d994194de2c/bpo/jobs/build_image.py
       - name: Build
         run: |
+          set -x
           pmbootstrap config device lenovo-b8000
           pmbootstrap config ui fbkeyboard
           pmbootstrap install --zap --password 147147 --no-image

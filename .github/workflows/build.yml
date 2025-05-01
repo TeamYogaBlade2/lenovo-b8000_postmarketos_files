@@ -48,8 +48,7 @@ jobs:
 
           cd ..
           if [ -d pmbootstrap ]; then
-            cd pmbootstrap
-            git pull
+            git -C pmbootstrap pull
           else
             git clone --depth=1 https://gitlab.postmarketos.org/postmarketOS/pmbootstrap.git pmbootstrap
           fi

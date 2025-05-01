@@ -66,6 +66,8 @@ jobs:
           PMB="`pwd`/../pmbootstrap/pmbootstrap.py --details-to-stdout -y"
 
           ln -s `pwd` /home/runner/.local/var/pmbootstrap/cache_git/pmaports/device/blade10
+          # hack: Are symlinks referenced based on the source of Symlink?
+          ln -s ~/.local/var/pmbootstrap/cache_git/pmaports/device/.shared-patches/ ..
 
           set -x
 

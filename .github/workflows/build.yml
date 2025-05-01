@@ -54,12 +54,6 @@ jobs:
             git clone --depth=1 https://gitlab.postmarketos.org/postmarketOS/pmbootstrap.git pmbootstrap
           fi
 
-          cat > /usr/local/bin/pmbootstrap << EOL
-          exec `pwd`/pmbootstrap/pmbootstrap.py --details-to-stdout $@
-          EOL
-
-          chmod a+x /usr/local/bin/pmbootstrap
-
           yes '' | `pwd`/pmbootstrap/pmbootstrap.py --details-to-stdout init
           pmbootstrap work_migrate
           pmbootstrap -q shutdown
@@ -68,11 +62,13 @@ jobs:
       # https://gitlab.postmarketos.org/postmarketOS/build.postmarketos.org/-/blob/bd94e26981da2b44020db26e2d2f1d994194de2c/bpo/jobs/build_image.py
       - name: Build
         run: |
+          PMB="`pwd`/../pmbootstrap/pmbootstrap.py --details-to-stdout -y"
           set -x
-          pmbootstrap config device lenovo-b8000
-          pmbootstrap config ui fbkeyboard
-          pmbootstrap install --zap --password 147147 --no-image
-          pmbootstrap install --zap --password 147147 --fde --no-image
+          
+          $PMB config device lenovo-b8000
+          $PMB config ui fbkeyboard
+          $PMB install --zap --password 147147 --no-image
+          $PMB install --zap --password 147147 --fde --no-image
 
       - name: Release
         run: gh release create "build-$(date +%Y-%m-%d-%H-%M-%S)" build_result.tar.gz

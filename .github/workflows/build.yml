@@ -60,7 +60,7 @@ jobs:
 
           chmod a+x /usr/local/bin/pmbootstrap
 
-          yes '' | pmbootstrap init
+          yes '' | `pwd`/pmbootstrap/pmbootstrap.py --details-to-stdout init
           pmbootstrap work_migrate
           pmbootstrap -q shutdown
 

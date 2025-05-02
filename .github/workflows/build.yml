@@ -15,9 +15,6 @@ permissions:
   packages: write
   contents: write
 
-env:
-  CCACHE_DIR: "/dev/shm/ccache"
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -27,6 +24,8 @@ jobs:
         if: ${{ inputs.tmate }}
         with:
           detached: true
+        env:
+          GH_TOKEN: ${{ github.token }}
 
       - name: Cache
         id: cache
@@ -34,7 +33,7 @@ jobs:
         with:
           path: |
             /home/runner/.local/var/pmbootstrap
-            ../pmbootstrap
+            /home/runner/work/lenovo-b8000_postmarketos_files/pmbootstrap
           key: cache-${{ github.sha }}
           restore-keys: cache-
 

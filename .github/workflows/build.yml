@@ -74,7 +74,7 @@ jobs:
           $PMB config device lenovo-b8000
           $PMB config ui fbkeyboard
           $PMB install --password 147147
-          $PMB install --password 147147 --android-recovery-zip
+          #$PMB install --password 147147 --android-recovery-zip
           # https://wiki.postmarketos.org/wiki/Installation_from_recovery_mode
           $PMB export
 

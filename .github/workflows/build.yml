@@ -89,7 +89,7 @@ jobs:
           done
 
           popd
-          gh release create "build-$(date +%Y-%m-%d-%H-%M-%S)" '/tmp/postmarketOS-export/*'
+          gh release create "build-${{ github.ref_name }}-$(date +%Y-%m-%d-%H-%M-%S)" '/tmp/postmarketOS-export/*'
 
         env:
           GH_TOKEN: ${{ github.token }}

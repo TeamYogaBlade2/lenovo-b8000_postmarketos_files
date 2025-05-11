@@ -2,7 +2,7 @@
 # Kernel config based on: arch/arm/configs/(CHANGEME!)
 
 pkgname=linux-lenovo-b8000
-pkgver=3.4.5
+pkgver=6.15.0-rc4
 pkgrel=0
 pkgdesc="Lenovo YOGA Tablet 10 kernel fork"
 arch="armv7"
@@ -11,21 +11,42 @@ _flavor="lenovo-b8000"
 url="https://kernel.org"
 license="GPL-2.0-only"
 options="!strip !check !tracedeps pmb:cross-native"
+makedepends="
+	bash
+	bc
+	bison
+	devicepkg-dev
+	findutils
+	flex
+	openssl-dev
+	perl
+"
 
 # Source
+_repository="linux"
+_commit="main"
+_config="config-$_flavor.$arch"
 source="
-    kernel_blade10_row_wifi.bin
-    kernel.release
+	$pkgname-$_commit.tar.gz::https://github.com/TeamYogaBlade2/$_repository/archive/$_commit.tar.gz
+	$_config
 "
+builddir="$srcdir/$_repository-$_commit"
+_outdir="out"
 
-# https://gitlab.postmarketos.org/postmarketOS/pmaports/-/blob/3a88bde1056489f5d1b47e0e82a18c62ed0667b1/main/devicepkg-dev/downstreamkernel_package.sh
-package() {
-# kernel.release
-    install -D "kernel.release" "$pkgdir/usr/share/kernel/$_flavor/kernel.release"
-	install -Dm644 kernel_blade10_row_wifi.bin "$pkgdir/boot/vmlinuz"
+prepare() {
+	default_prepare
+	. downstreamkernel_prepare
 }
 
-sha512sums="
-5a9f6a2e85232ab7a6116ad8bdc0f30eca8264d78182e4ed0fda58eaef3febacd0e84527e2711876c66c63bc9cb4e67e403839ae99c9da35b48364bcde15cbf8  kernel_blade10_row_wifi.bin
-4a12b4e499bd0cca0ba84f50a64df134476d5eede8763254b72b09e00ee691daf1f17c7e634f8b0fb355ae55d9911c3b4092996ce25231b41451836c1c35d561  kernel.release
-"
+build() {
+	unset LDFLAGS
+	make O="$_outdir" ARCH="$_carch" CC="${CC:-gcc}" \
+		KBUILD_BUILD_VERSION="$((pkgrel + 1 ))-postmarketOS"
+}
+
+package() {
+	downstreamkernel_package "$builddir" "$pkgdir" "$_carch" \
+		"$_flavor" "$_outdir"
+}
+
+sha512sums="(run 'pmbootstrap checksum linux-lenovo-b8000' to fill)"

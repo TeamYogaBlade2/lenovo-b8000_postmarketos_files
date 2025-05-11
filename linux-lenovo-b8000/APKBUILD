@@ -41,6 +41,11 @@ prepare() {
 
 build() {
 	unset LDFLAGS
+
+	# from https://gitlab.postmarketos.org/postmarketOS/pmaports/-/blob/9b3769ccedf3f865fbb177b4798e1fe5794f180a/main/devicepkg-dev/downstreamkernel_prepare.sh
+	yes "" | make -C "$builddir" ARCH="$_carch" O="$_outdir" $_hostcc blade10_defconfig
+	yes "" | make -C "$builddir" ARCH="$_carch" O="$_outdir" $_hostcc oldconfig
+
 	make O="$_outdir" ARCH="$_carch" CC="${CC:-gcc}" \
 		KBUILD_BUILD_VERSION="$((pkgrel + 1 ))-postmarketOS"
 }

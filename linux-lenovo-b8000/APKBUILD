@@ -2,7 +2,8 @@
 # Kernel config based on: arch/arm/configs/(CHANGEME!)
 
 pkgname=linux-lenovo-b8000
-pkgver=6.15.0-rc4
+#pkgver=6.15.0-rc4
+pkgver=6.15.0
 pkgrel=0
 pkgdesc="Lenovo YOGA Tablet 10 kernel fork"
 arch="armv7"

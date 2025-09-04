@@ -2,14 +2,13 @@
 # Kernel config based on: arch/arm/configs/(CHANGEME!)
 
 pkgname=linux-lenovo-b8000
-#pkgver=6.15.0-rc4
-pkgver=6.15.0
+pkgver=6.16
 pkgrel=0
 pkgdesc="Lenovo YOGA Tablet 10 kernel fork"
 arch="armv7"
 _carch="arm"
 _flavor="lenovo-b8000"
-url="https://kernel.org"
+url="https://github.com/TeamYogaBlade2/linux"
 license="GPL-2.0-only"
 options="!strip !check !tracedeps pmb:cross-native"
 makedepends="
@@ -21,11 +20,12 @@ makedepends="
 	flex
 	openssl-dev
 	perl
+	grep
 "
 
 # Source
 _repository="linux"
-_commit="main"
+_commit="blade/v6.16"
 _config="config-$_flavor.$arch"
 source="
 	$pkgname-$_commit.tar.gz::https://github.com/TeamYogaBlade2/$_repository/archive/$_commit.tar.gz
@@ -41,11 +41,6 @@ prepare() {
 
 build() {
 	unset LDFLAGS
-
-	# from https://gitlab.postmarketos.org/postmarketOS/pmaports/-/blob/9b3769ccedf3f865fbb177b4798e1fe5794f180a/main/devicepkg-dev/downstreamkernel_prepare.sh
-	yes "" | make -C "$builddir" ARCH="$_carch" O="$_outdir" $_hostcc blade10_defconfig
-	yes "" | make -C "$builddir" ARCH="$_carch" O="$_outdir" $_hostcc oldconfig
-
 	make O="$_outdir" ARCH="$_carch" CC="${CC:-gcc}" \
 		KBUILD_BUILD_VERSION="$((pkgrel + 1 ))-postmarketOS"
 }

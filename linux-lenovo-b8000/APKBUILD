@@ -12,6 +12,7 @@ url="https://github.com/TeamYogaBlade2/linux"
 license="GPL-2.0-only"
 options="!strip !check !tracedeps pmb:cross-native"
 makedepends="
+	gcc-arm-none-eabi
 	bash
 	bc
 	bison
@@ -36,17 +37,18 @@ _outdir="out"
 
 prepare() {
 	default_prepare
-	. downstreamkernel_prepare
 }
 
 build() {
 	unset LDFLAGS
 
-	# hack
-	make O="$_outdir" ARCH="$_carch" lenovo-blade_defconfig
+	export ARCH="$_carch"
+	export CROSS_COMPILE=arm-none-eabi-
 
-	make O="$_outdir" ARCH="$_carch" CC="${CC:-gcc}" \
-		KBUILD_BUILD_VERSION="$((pkgrel + 1 ))-postmarketOS"
+	# hack, it shouldn't be here
+	make O="$_outdir" lenovo-blade_defconfig
+
+	make O="$_outdir" KBUILD_BUILD_VERSION="$((pkgrel + 1 ))-postmarketOS"
 }
 
 package() {

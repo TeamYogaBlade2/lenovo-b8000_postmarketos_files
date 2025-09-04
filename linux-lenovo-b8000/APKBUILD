@@ -54,4 +54,7 @@ package() {
 		"$_flavor" "$_outdir"
 }
 
-#sha512sums="(run 'pmbootstrap checksum linux-lenovo-b8000' to fill)"
+sha512sums="
+2f47949e95978ad112bde27e4656a19c4d4acd8e6cf23828de5d8e1e8180161cb3ba1ef1efddc9fa40b685a78c0d12e6050971e60abe47e1ba8f319d83ce2fe4
+be688838ca8686e5c90689bf2ab585cef1137c999b48c70b92f67a5c34dc15697b5d11c982ed6d71be1e1e7f7b4e0733884aa97c3f7a339a8ed03577cf74be09
+"

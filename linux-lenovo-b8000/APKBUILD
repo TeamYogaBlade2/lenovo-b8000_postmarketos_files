@@ -43,7 +43,7 @@ build() {
 	unset LDFLAGS
 
 	# hack
-	make lenovo-blade_defconfig
+	make O="$_outdir" ARCH="$_carch" lenovo-blade_defconfig
 
 	make O="$_outdir" ARCH="$_carch" CC="${CC:-gcc}" \
 		KBUILD_BUILD_VERSION="$((pkgrel + 1 ))-postmarketOS"

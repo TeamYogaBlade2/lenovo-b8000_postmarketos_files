@@ -24,6 +24,8 @@ makedepends="
 	grep
 "
 
+#makedepends="bash bc bison devicepkg-dev flex openssl-dev perl gmp-dev mpc1-dev mpfr-dev findutils postmarketos-installkernel"
+
 # Source
 _repository="linux"
 _commit="638c6e00756fc9fffa5dd4ba47d2f8658bbdd11d"
@@ -46,14 +48,23 @@ build() {
 	export CROSS_COMPILE=arm-none-eabi-
 
 	# hack, it shouldn't be here
+	export MAKEFLAGS="-j$(nproc)"
 	make O="$_outdir" lenovo-blade_defconfig
 
 	make O="$_outdir" KBUILD_BUILD_VERSION="$((pkgrel + 1 ))-postmarketOS"
 }
 
 package() {
-	downstreamkernel_package "$builddir" "$pkgdir" "$_carch" \
-		"$_flavor" "$_outdir"
+	mkdir -p "$pkgdir"/boot
+	make zinstall modules_install dtbs_install \
+		ARCH="$_carch" \
+		INSTALL_MOD_STRIP=1 \
+		INSTALL_PATH="$pkgdir"/boot \
+		INSTALL_MOD_PATH="$pkgdir" \
+		INSTALL_DTBS_PATH="$pkgdir/usr/share/dtb"
+
+	install -D "$builddir"/include/config/kernel.release \
+		"$pkgdir/usr/share/kernel/$_flavor/kernel.release"
 }
 
 sha512sums="

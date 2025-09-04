@@ -35,7 +35,6 @@ source="
 	$_config
 "
 builddir="$srcdir/$_repository-$_commit"
-_outdir="out"
 
 prepare() {
 	default_prepare
@@ -49,9 +48,9 @@ build() {
 
 	# hack, it shouldn't be here
 	export MAKEFLAGS="-j$(nproc)"
-	make O="$_outdir" lenovo-blade_defconfig
+	make lenovo-blade_defconfig
 
-	make O="$_outdir" KBUILD_BUILD_VERSION="$((pkgrel + 1 ))-postmarketOS"
+	make KBUILD_BUILD_VERSION="$((pkgrel + 1 ))-postmarketOS"
 }
 
 package() {

@@ -28,7 +28,7 @@ deviceinfo_flash_offset_ramdisk="0x01000000"
 deviceinfo_flash_offset_second="0x00f00000"
 deviceinfo_flash_offset_tags="0x00000100"
 
-deviceinfo_dtb="mediatek/mt6589-lenovo-blade-b8000-f"
+deviceinfo_dtb="mt6589-lenovo-blade-b8000-f"
 deviceinfo_append_dtb="true"
 
 deviceinfo_create_initfs_extra="true"

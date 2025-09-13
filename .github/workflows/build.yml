@@ -64,6 +64,11 @@ jobs:
         run: |
           PMB="`pwd`/../pmbootstrap/pmbootstrap.py --details-to-stdout -y"
 
+          TARGET_DIR="/home/runner/.local/var/pmbootstrap/cache_git/pmaports/device/testing"
+          for dir in */; do
+            ln -s -v -n "$(pwd)/${dir%/}" "$TARGET_DIR"
+          done
+
           ln -s `pwd` /home/runner/.local/var/pmbootstrap/cache_git/pmaports/device/blade10
           # hack: Are symlinks referenced based on the source of Symlink?
           ln -s ~/.local/var/pmbootstrap/cache_git/pmaports/device/.shared-patches/ ..

@@ -63,7 +63,8 @@ jobs:
           #PMB="`pwd`/pmbootstrap/pmbootstrap.py --details-to-stdout -y"
           useradd -m builder
 
-          << EOF sudo -u builder sh
+          <<- EOF sudo -u builder sh
+            set -x
             PMB="pmbootstrap --details-to-stdout -y"
             yes '' | $PMB --details-to-stdout init
             $PMB work_migrate
@@ -72,7 +73,7 @@ jobs:
 
       - name: Build
         run: |
-          << EOF sudo -u builder sh
+          <<- EOF sudo -u builder sh
             # https://gitlab.postmarketos.org/postmarketOS/pmbootstrap/-/blob/b982e45c8d1c803360e1d8227cf88c5a4c607979/.gitlab-ci.yml
             # https://gitlab.postmarketos.org/postmarketOS/build.postmarketos.org/-/blob/bd94e26981da2b44020db26e2d2f1d994194de2c/bpo/jobs/build_image.py
             set -x

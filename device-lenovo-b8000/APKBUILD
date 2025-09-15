@@ -11,6 +11,7 @@ depends="
 	linux-lenovo-b8000
 	mkbootimg
 	postmarketos-base
+	mtk-mkimage
 "
 makedepends="devicepkg-dev"
 source="

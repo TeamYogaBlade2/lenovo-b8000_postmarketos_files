@@ -63,12 +63,12 @@ jobs:
           $PMB work_migrate
           $PMB -q shutdown
 
-      # https://gitlab.postmarketos.org/postmarketOS/pmbootstrap/-/blob/b982e45c8d1c803360e1d8227cf88c5a4c607979/.gitlab-ci.yml
-      # https://gitlab.postmarketos.org/postmarketOS/build.postmarketos.org/-/blob/bd94e26981da2b44020db26e2d2f1d994194de2c/bpo/jobs/build_image.py
       - name: Build
         run: |
+          # https://gitlab.postmarketos.org/postmarketOS/pmbootstrap/-/blob/b982e45c8d1c803360e1d8227cf88c5a4c607979/.gitlab-ci.yml
+          # https://gitlab.postmarketos.org/postmarketOS/build.postmarketos.org/-/blob/bd94e26981da2b44020db26e2d2f1d994194de2c/bpo/jobs/build_image.py
           set -x
-#          PMB="`pwd`/../pmbootstrap/pmbootstrap.py --details-to-stdout -y"
+          #PMB="`pwd`/../pmbootstrap/pmbootstrap.py --details-to-stdout -y"
           PMB="pmbootstrap --details-to-stdout -y"
 
           TARGET_DIR="/home/runner/.local/var/pmbootstrap/cache_git/pmaports/device/testing"

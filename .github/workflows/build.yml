@@ -35,7 +35,8 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-            /home/runner/.local/var/pmbootstrap
+            /home/builder/.local/var/pmbootstrap
+            /var/cache/pacman/pkg
           # /home/runner/work/lenovo-b8000_postmarketos_files/pmbootstrap
           key: cache-${{ github.sha }}
           restore-keys: cache-
@@ -76,7 +77,7 @@ jobs:
           #PMB="`pwd`/../pmbootstrap/pmbootstrap.py --details-to-stdout -y"
           PMB="sudo -u builder pmbootstrap --details-to-stdout -y"
 
-          TARGET_DIR="/home/runner/.local/var/pmbootstrap/cache_git/pmaports/device/testing"
+          TARGET_DIR="/home/builder/.local/var/pmbootstrap/cache_git/pmaports/device/testing"
           for dir in */; do
             sudo -u builder ln -f -s -v -n "$(pwd)/${dir%/}" "$TARGET_DIR"
           done

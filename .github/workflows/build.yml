@@ -27,15 +27,15 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
 
-      - name: Cache
-        id: cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            /home/runner/.local/var/pmbootstrap
-            /home/runner/work/lenovo-b8000_postmarketos_files/pmbootstrap
-          key: cache-${{ github.sha }}
-          restore-keys: cache-
+#      - name: Cache
+#        id: cache
+#        uses: actions/cache@v4
+#        with:
+#          path: |
+#            /home/runner/.local/var/pmbootstrap
+#            /home/runner/work/lenovo-b8000_postmarketos_files/pmbootstrap
+#          key: cache-${{ github.sha }}
+#          restore-keys: cache-
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -67,7 +67,7 @@ jobs:
 
           TARGET_DIR="/home/runner/.local/var/pmbootstrap/cache_git/pmaports/device/testing"
           for dir in */; do
-            ln -s -v -n "$(pwd)/${dir%/}" "$TARGET_DIR"
+            ln -f -s -v -n "$(pwd)/${dir%/}" "$TARGET_DIR"
           done
 
           $PMB config device lenovo-b8000

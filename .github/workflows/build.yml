@@ -46,7 +46,7 @@ jobs:
       - name: Setup env
         run: |
           set -x
-          pacman -Syu pmbootstrap
+          pacman -Syu --noconfirm pmbootstrap
           # https://packages.ubuntu.com/plucky/pmbootstrap : git kpartx openssl python3
           #sudo apt-get install git kpartx openssl python3
 

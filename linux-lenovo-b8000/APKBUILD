@@ -28,7 +28,7 @@ makedepends="
 
 # Source
 _repository="linux"
-_commit="32749c5e80a99cef9f2d94c64954e86b228c88f6"
+_commit="4ec9bf60020cfce06c99fa498cfd2779ed706f30"
 _config="config-$_flavor.$arch"
 source="
 	$pkgname-$_commit.tar.gz::https://github.com/TeamYogaBlade2/$_repository/archive/$_commit.tar.gz
@@ -67,6 +67,6 @@ package() {
 }
 
 sha512sums="
-b811f64f32185ecfbfbe67b3d7950772e3aac925f5396f7b2849f11327c6d8a2ccde2670797e1acc741d40d78bae34c1c6b2178c2b8f6bd45c355b6cea4579d7 linux-lenovo-b8000-32749c5e80a99cef9f2d94c64954e86b228c88f6.tar.gz
-be688838ca8686e5c90689bf2ab585cef1137c999b48c70b92f67a5c34dc15697b5d11c982ed6d71be1e1e7f7b4e0733884aa97c3f7a339a8ed03577cf74be09 config-lenovo-b8000.armv7
+cd530510ad0602ff6edb7adf25fdcb28daac8aeedf88ee3f84d8a3d01d10f4fcde1749bc1e06ee6224aec346854155d134d272603f0da8a87deea0b23ad07e30  linux-lenovo-b8000-4ec9bf60020cfce06c99fa498cfd2779ed706f30.tar.gz
+be688838ca8686e5c90689bf2ab585cef1137c999b48c70b92f67a5c34dc15697b5d11c982ed6d71be1e1e7f7b4e0733884aa97c3f7a339a8ed03577cf74be09  config-lenovo-b8000.armv7
 "

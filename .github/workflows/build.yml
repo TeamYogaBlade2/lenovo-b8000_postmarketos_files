@@ -18,6 +18,9 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    container:
+      image: archlinux:base
+      options: --privileged
 
     steps:
       - uses: mxschmitt/action-tmate@v3
@@ -27,15 +30,15 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
 
-#      - name: Cache
-#        id: cache
-#        uses: actions/cache@v4
-#        with:
-#          path: |
-#            /home/runner/.local/var/pmbootstrap
-#            /home/runner/work/lenovo-b8000_postmarketos_files/pmbootstrap
-#          key: cache-${{ github.sha }}
-#          restore-keys: cache-
+      - name: Cache
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            /home/runner/.local/var/pmbootstrap
+          # /home/runner/work/lenovo-b8000_postmarketos_files/pmbootstrap
+          key: cache-${{ github.sha }}
+          restore-keys: cache-
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -43,27 +46,29 @@ jobs:
       - name: Setup env
         run: |
           set -x
+          pacman -Syu pmbootstrap
           # https://packages.ubuntu.com/plucky/pmbootstrap : git kpartx openssl python3
           #sudo apt-get install git kpartx openssl python3
 
-          cd ..
-          if [ -d pmbootstrap ]; then
-            git -C pmbootstrap pull
-          else
-            git clone --depth=1 https://gitlab.postmarketos.org/postmarketOS/pmbootstrap.git pmbootstrap
-          fi
-          PMB="`pwd`/pmbootstrap/pmbootstrap.py --details-to-stdout -y"
-
-          yes '' | $PMB --details-to-stdout init
-          $PMB work_migrate
-          $PMB -q shutdown
+#          cd ..
+#          if [ -d pmbootstrap ]; then
+#            git -C pmbootstrap pull
+#          else
+#            git clone --depth=1 https://gitlab.postmarketos.org/postmarketOS/pmbootstrap.git pmbootstrap
+#          fi
+#          PMB="`pwd`/pmbootstrap/pmbootstrap.py --details-to-stdout -y"
+#
+#          yes '' | $PMB --details-to-stdout init
+#          $PMB work_migrate
+#          $PMB -q shutdown
 
       # https://gitlab.postmarketos.org/postmarketOS/pmbootstrap/-/blob/b982e45c8d1c803360e1d8227cf88c5a4c607979/.gitlab-ci.yml
       # https://gitlab.postmarketos.org/postmarketOS/build.postmarketos.org/-/blob/bd94e26981da2b44020db26e2d2f1d994194de2c/bpo/jobs/build_image.py
       - name: Build
         run: |
           set -x
-          PMB="`pwd`/../pmbootstrap/pmbootstrap.py --details-to-stdout -y"
+#          PMB="`pwd`/../pmbootstrap/pmbootstrap.py --details-to-stdout -y"
+          PMB="pmbootstrap --details-to-stdout -y"
 
           TARGET_DIR="/home/runner/.local/var/pmbootstrap/cache_git/pmaports/device/testing"
           for dir in */; do

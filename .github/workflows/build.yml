@@ -57,31 +57,36 @@ jobs:
           #  git clone --depth=1 https://gitlab.postmarketos.org/postmarketOS/pmbootstrap.git pmbootstrap
           #fi
           #PMB="`pwd`/pmbootstrap/pmbootstrap.py --details-to-stdout -y"
+          useradd -m builder
 
-          PMB="pmbootstrap --details-to-stdout -y"
-          yes '' | $PMB --details-to-stdout init
-          $PMB work_migrate
-          $PMB -q shutdown
+          su builder << EOL
+            PMB="pmbootstrap --details-to-stdout -y"
+            yes '' | $PMB --details-to-stdout init
+            $PMB work_migrate
+            $PMB -q shutdown
+          EOL
 
       - name: Build
         run: |
-          # https://gitlab.postmarketos.org/postmarketOS/pmbootstrap/-/blob/b982e45c8d1c803360e1d8227cf88c5a4c607979/.gitlab-ci.yml
-          # https://gitlab.postmarketos.org/postmarketOS/build.postmarketos.org/-/blob/bd94e26981da2b44020db26e2d2f1d994194de2c/bpo/jobs/build_image.py
-          set -x
-          #PMB="`pwd`/../pmbootstrap/pmbootstrap.py --details-to-stdout -y"
-          PMB="pmbootstrap --details-to-stdout -y"
+          su builder << EOL
+            # https://gitlab.postmarketos.org/postmarketOS/pmbootstrap/-/blob/b982e45c8d1c803360e1d8227cf88c5a4c607979/.gitlab-ci.yml
+            # https://gitlab.postmarketos.org/postmarketOS/build.postmarketos.org/-/blob/bd94e26981da2b44020db26e2d2f1d994194de2c/bpo/jobs/build_image.py
+            set -x
+            #PMB="`pwd`/../pmbootstrap/pmbootstrap.py --details-to-stdout -y"
+            PMB="pmbootstrap --details-to-stdout -y"
 
-          TARGET_DIR="/home/runner/.local/var/pmbootstrap/cache_git/pmaports/device/testing"
-          for dir in */; do
-            ln -f -s -v -n "$(pwd)/${dir%/}" "$TARGET_DIR"
-          done
+            TARGET_DIR="/home/runner/.local/var/pmbootstrap/cache_git/pmaports/device/testing"
+            for dir in */; do
+              ln -f -s -v -n "$(pwd)/${dir%/}" "$TARGET_DIR"
+            done
 
-          $PMB config device lenovo-b8000
-          $PMB config ui fbkeyboard
-          $PMB install --password 147147
-          #$PMB install --password 147147 --android-recovery-zip
-          # https://wiki.postmarketos.org/wiki/Installation_from_recovery_mode
-          $PMB export
+            $PMB config device lenovo-b8000
+            $PMB config ui fbkeyboard
+            $PMB install --password 147147
+            #$PMB install --password 147147 --android-recovery-zip
+            # https://wiki.postmarketos.org/wiki/Installation_from_recovery_mode
+            $PMB export
+          EOL
 
       - name: Release
         run: |

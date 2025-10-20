@@ -51,7 +51,7 @@ jobs:
           root ALL=(ALL:ALL) NOPASSWD: ALL
           builder ALL=(ALL:ALL) NOPASSWD: ALL
           EOL
-          pacman -Syu --noconfirm pmbootstrap sudo
+          pacman -Syu --noconfirm pmbootstrap sudo github-cli
           # https://packages.ubuntu.com/plucky/pmbootstrap : git kpartx openssl python3
           #sudo apt-get install git kpartx openssl python3
 

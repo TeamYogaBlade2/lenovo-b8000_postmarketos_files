@@ -90,6 +90,8 @@ jobs:
           $PMB export
 
       - name: Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           pushd /tmp/postmarketOS-export/
           # pmbootstrap creates symlinks to non-existent files

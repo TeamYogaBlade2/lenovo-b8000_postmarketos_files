@@ -91,7 +91,7 @@ jobs:
 
       - name: Release
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           pushd /tmp/postmarketOS-export/
           # pmbootstrap creates symlinks to non-existent files
@@ -104,6 +104,3 @@ jobs:
 
           popd
           gh release create "build-${{ github.ref_name }}-$(date +%Y-%m-%d-%H-%M-%S)" '/tmp/postmarketOS-export/*'
-
-        env:
-          GH_TOKEN: ${{ github.token }}

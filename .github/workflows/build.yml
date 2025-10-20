@@ -93,6 +93,7 @@ jobs:
           #$PMB install --password 147147 --android-recovery-zip
           # https://wiki.postmarketos.org/wiki/Installation_from_recovery_mode
           $PMB export
+          $PMB shutdown
 
       - name: Release
         env:

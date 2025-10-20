@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: archlinux:base
-      options: --privileged
+      options: --privileged --mount type=bind,source=/dev,target=/dev,bind-propagation=rshared
 
     steps:
       - uses: mxschmitt/action-tmate@v3

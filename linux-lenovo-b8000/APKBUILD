@@ -21,6 +21,7 @@ makedepends="
 	flex
 	openssl-dev
 	perl
+	lld
 	grep
 "
 

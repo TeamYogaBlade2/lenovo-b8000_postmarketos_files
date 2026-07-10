@@ -93,7 +93,6 @@ jobs:
           #$PMB install --password 147147 --android-recovery-zip
           # https://wiki.postmarketos.org/wiki/Installation_from_recovery_mode
           $PMB export
-          $PMB shutdown
 
       - name: Release
         env:
@@ -110,3 +109,9 @@ jobs:
 
           popd
           gh release create "build-${{ github.ref_name }}-$(date +%Y-%m-%d-%H-%M-%S)" '/tmp/postmarketOS-export/*'
+
+      - name: Shutdown
+        run: |
+          set -x
+          PMB="sudo -u builder `pwd`/../pmbootstrap/pmbootstrap.py --details-to-stdout -y"
+          $PMB shutdown

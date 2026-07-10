@@ -2,7 +2,7 @@
 # Kernel config based on: arch/arm/configs/(CHANGEME!)
 
 pkgname=linux-lenovo-b8000
-pkgver=6.16
+pkgver=7.1
 pkgrel=0
 pkgdesc="Lenovo YOGA Tablet 10 kernel fork"
 arch="armv7"
@@ -12,10 +12,10 @@ url="https://github.com/TeamYogaBlade2/linux"
 license="GPL-2.0-only"
 options="!strip !check !tracedeps pmb:cross-native"
 makedepends="
-	gcc-arm-none-eabi
 	bash
 	bc
 	bison
+	clang
 	devicepkg-dev
 	findutils
 	flex
@@ -45,6 +45,7 @@ build() {
 
 	export ARCH="$_carch"
 	export CROSS_COMPILE=arm-none-eabi-
+	export LLVM=1
 
 	# hack, it shouldn't be here
 	export MAKEFLAGS="-j$(nproc)"
@@ -55,6 +56,8 @@ build() {
 
 package() {
 	mkdir -p "$pkgdir"/boot
+	export LLVM=1
+
 	make zinstall modules_install dtbs_install \
 		ARCH="$_carch" \
 		INSTALL_MOD_STRIP=1 \
